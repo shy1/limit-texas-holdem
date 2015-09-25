@@ -1,9 +1,8 @@
 package io.illcoder.casinoRoyale.blackjack;
 
-import io.illcoder.casinoRoyale.Dealer;
-import io.illcoder.casinoRoyale.Player;
 
 
+import io.illcoder.casinoRoyale.core.Player;
 
 import java.util.Scanner;
 
@@ -15,6 +14,7 @@ import java.util.Scanner;
 
 
 public class BlackjackEngine {
+    Dealer dealer = new Dealer();
     private final int BLACKJACK = 21;
     int wager;
 
@@ -216,7 +216,7 @@ public class BlackjackEngine {
 
         while (continueLoop) {
             System.out.println("Welcome to Ultimate ");
-            GameControl.pause(1);
+
             System.out.println("__________ .__                    __          ____.                 __     \n" +
                     "\\______   \\|  |  _____     ____  |  | __     |    |_____     ____  |  | __ \n" +
                     " |    |  _/|  |  \\__  \\  _/ ___\\ |  |/ /     |    |\\__  \\  _/ ___\\ |  |/ / \n" +

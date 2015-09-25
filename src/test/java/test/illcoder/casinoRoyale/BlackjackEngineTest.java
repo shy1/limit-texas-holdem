@@ -3,6 +3,7 @@ package test.illcoder.casinoRoyale;
 import io.illcoder.casinoRoyale.Player;
 import io.illcoder.casinoRoyale.blackjack.BlackjackEngine;
 
+import io.illcoder.casinoRoyale.core.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
