@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotEquals;
  * Created by gsuhocki on 9/24/15.
  * Test the getShuffledDeck function to verify the method works
  */
-public class testDeck {
+public class TestDeck {
 
 
     Deck deck1 = new Deck();
