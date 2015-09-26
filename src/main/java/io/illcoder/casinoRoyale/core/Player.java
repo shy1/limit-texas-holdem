@@ -53,9 +53,7 @@ public class Player {
         return hand.get(_i);
     }
 
-    public void testingTest(){
 
-    }
 
 
 }
