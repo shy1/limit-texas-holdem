@@ -33,6 +33,7 @@ public class Player {
 
     public void addCard(Card card) {
         this.hand.add(card);
+
     }
 
     public void setName(String name) {
