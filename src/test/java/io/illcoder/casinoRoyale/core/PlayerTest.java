@@ -1,13 +1,10 @@
 package io.illcoder.casinoRoyale.core;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by sstrauss on 9/25/15.
@@ -17,6 +14,7 @@ public class PlayerTest {
     Player player2 = new Player("Tariq");
     Card card = new Card(Suit.CLUBS, Rank.EIGHT);
     List<Card> hand = new ArrayList<Card>();
+    Dealer dealer = new Dealer();
 
     @Test
     public void testGetName() throws Exception {
@@ -57,9 +55,9 @@ public class PlayerTest {
     public void testGetHand() throws Exception {
 
         for (int i = 0; i < 3; i++){
-            player.addCard(card);
+            player.addCard(dealer.dealCard());
         }
-        Assert.assertEquals("Adds 3 cards to the hand list and then displays hand",null, player.getHand());
+        Assert.assertEquals("Adds 3 cards to the hand list and then displays hand",3, player.getHand().size());
     }
 
     @Test
