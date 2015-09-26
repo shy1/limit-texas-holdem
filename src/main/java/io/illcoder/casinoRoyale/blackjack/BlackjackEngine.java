@@ -48,11 +48,12 @@ public class BlackjackEngine {
      * Check for bust method
      *
      * @param user
-     * @param cpu
+     *
      */
     public void checkUserForBust(Player user, Player cpu) {
         if (calcHandTotal(user) > 21) {
             gameOver(user);
+
         }
     }
 
@@ -69,6 +70,7 @@ public class BlackjackEngine {
             user.setMoney(user.getMoney() + (wager * 2));
             runGame(user);
         }
+    }
 
         /**
          * Add a GameOver method
@@ -96,8 +98,10 @@ public class BlackjackEngine {
      * @return
      */
     public int calcHandTotal(Player player) {
+        int sum = 0;
         for (int i = 0; i < player.getHand().size(); i++) {
-            int sum+=player.getHand().get(i).getCardBlackjackValue();
+
+            sum += player.getHand().get(i).getCardBlackjackValue();
         }
         return sum;
     }
@@ -116,6 +120,7 @@ public class BlackjackEngine {
         } else if (calcHandTotal(cpu) == getBLACKJACK()) {
             System.out.println("You lose");
         }
+
 
     }
 
@@ -155,6 +160,7 @@ public class BlackjackEngine {
         displayHand(player);
         calcHandTotal(player);
 
+
     }
 
 
@@ -171,7 +177,7 @@ public class BlackjackEngine {
      * @param player
      */
     public void displayHand(Player player) {
-        System.out.println(player.getHand());
+        System.out.println("Dealer has: " + player.getHand());
     }
 
     /**
@@ -188,6 +194,16 @@ public class BlackjackEngine {
             System.out.println("Dealer is showing:  " + cpu.getHandCard(0));
         }
 
+
+
+    }
+
+    /**
+     * Shows cpu's hand.
+     * @param cpu
+     */
+    public void showHands(Player cpu){
+        System.out.println(cpu.getHand());
     }
 
 
@@ -232,7 +248,7 @@ public class BlackjackEngine {
                     "hope your luckier than the dealer!");
             if (user.getMoney() > 0) {
                 takeWager(user);
-                break;
+
             }
 
             dealHands(user, cpu);
@@ -250,6 +266,13 @@ public class BlackjackEngine {
             User switch statement.
              */
             userChoice(user);
+            checkUserForBust(user, cpu);
+
+            /**
+             * Displays cpu's hand before he hits.
+             */
+
+            showHands(cpu);
 
             /**
              * Checks to see if computer has to hit or not
@@ -260,6 +283,8 @@ public class BlackjackEngine {
                 hit(cpu);
 
             }
+
+            displayHand(cpu);
 
             /**
              * Calculates the game total and selects a winner and gives the user money if they win.
@@ -281,5 +306,13 @@ public class BlackjackEngine {
         }
 
     }
+
+    public static void main(String[] args){
+        BlackjackEngine bj = new BlackjackEngine();
+        Player player = new Player("Sean");
+        bj.runGame(player);
+
+    }
 }
-}
+
+
