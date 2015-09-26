@@ -1,7 +1,7 @@
 package io.illcoder.casinoRoyale.blackjack;
 
 
-
+import io.illcoder.casinoRoyale.core.Dealer;
 import io.illcoder.casinoRoyale.core.Player;
 
 import java.util.Scanner;
