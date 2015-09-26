@@ -2,6 +2,7 @@ package io.illcoder.casinoRoyale.core;
 
 /**
  * Created by sstrauss on 9/23/15.
+ * pause functions for user interface
  */
 
 
