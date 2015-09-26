@@ -1,4 +1,6 @@
-package io.illcoder.casinoRoyale;
+package io.illcoder.casinoRoyale.core;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Player {
 
     public void addCard(Card card) {
         this.hand.add(card);
+
     }
 
     public void setName(String name) {
@@ -49,6 +52,9 @@ public class Player {
     public Card getHandCard(int _i){
         return hand.get(_i);
     }
+
+
+
 
 }
 
