@@ -1,4 +1,7 @@
-package io.illcoder.casinoRoyale.core;
+package test.illcoder.casinoRoyale;
+
+//import io.illcoder.casinoRoyale.core.Card;
+//import io.illcoder.casinoRoyale.core.Deck;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +64,7 @@ public class Dealer {
     public Card getCardByIndex(int idx) {
         return cardDeck.get(idx);
     }
+
 
 
 
