@@ -5,9 +5,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+<<<<<<< HEAD
 /**
  * Created by gsuhocki on 9/23/15.
  */
+=======
+
+import static org.junit.Assert.*;
+>>>>>>> origin/feature_10
 /**
  * Created by clouie on 9/22/15.
  */
@@ -16,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RankTest {
 
+<<<<<<< HEAD
     @Test
     public void getPokerValueTest(){
 
@@ -29,6 +35,11 @@ public class RankTest {
 
 
 
+=======
+
+    @Test
+    public void getPokerValueTest(){
+>>>>>>> origin/feature_10
         assertEquals("Testing the value Rank.TWO should return 2", 2, Rank.TWO.getPokerValue());
         assertEquals("Testing the value Rank.THREE should return 3", 3, Rank.THREE.getPokerValue());
         assertEquals("Testing the value Rank.FOUR should return 4", 4, Rank.FOUR.getPokerValue());

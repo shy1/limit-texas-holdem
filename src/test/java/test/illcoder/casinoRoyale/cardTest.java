@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 /**
  * Created by clouie on 9/23/15.
- * tests the card class
  */
 public class cardTest {
     Card card = new Card(Suit.HEARTS, Rank.JACK);
@@ -22,12 +21,12 @@ public class cardTest {
     }
 
     @Test
-    public void getCardPokerValue(){
+    public void getCardPokerValueTest(){
         assertEquals("Testing the cardPokerValue, Card.JACK should return int 11 ", 11, card.getCardPokerValue());
     }
 
     @Test
-    public void getCardBlackjackValue(){
+    public void getCardBlackjackValueTest(){
         assertEquals("Testing the cardBlackjackValue, Rank.JACK should return int 10 ", 10, card.getCardBlackjackValue());
     }
 }
