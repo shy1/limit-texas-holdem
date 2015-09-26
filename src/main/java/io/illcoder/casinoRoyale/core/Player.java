@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by sstrauss on 9/24/15.
+ * Player class that holds a name, amount of money, and a hand that is an ArrayList of Card objects.
  */
 public class Player {
     private String name;
@@ -46,7 +47,7 @@ public class Player {
     }
 
     /**
-     * Adds a single care to the players hand
+     * Adds a single card to the players hand
      * @param card is called from dealer.dealCard();
      */
     public void addCard(Card card) {
@@ -72,7 +73,7 @@ public class Player {
 
     /**
      * Display the players hand.
-     * @return
+     * @return hand - an ArrayList of Card objects
      */
     public List<Card> getHand() {
         return hand;
@@ -81,8 +82,8 @@ public class Player {
     /**
      * Method is used in BlackJack game to display just one of the cpu players cards at the
      * beginning of the game to simulate how a real game of BlackJack begins with one card up.
-     * @param _i
-     * @return
+     * @param _i - index of the which Card in the hand ArrayList to return
+     * @return Card - the desired Card object
      */
     public Card getHandCard(int _i){
         return hand.get(_i);

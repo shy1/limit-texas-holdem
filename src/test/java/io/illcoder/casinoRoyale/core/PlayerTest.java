@@ -13,7 +13,7 @@ public class PlayerTest {
     Player player = new Player("Sean");
     Player player2 = new Player("Tariq");
     Card card = new Card(Suit.CLUBS, Rank.EIGHT);
-    List<Card> hand = new ArrayList<Card>();
+    //List<Card> hand = new ArrayList<Card>();
     Dealer dealer = new Dealer();
 
     @Test
@@ -41,14 +41,14 @@ public class PlayerTest {
     public void testSetName() throws Exception {
         Assert.assertEquals("Sean", player.getName());
         player.setName("Tariq");
-        Assert.assertEquals("Tariq", player.getName());
+        Assert.assertEquals("Test that player has the correct name after setting", "Tariq", player.getName());
     }
 
     @Test
     public void testSetMoney() throws Exception {
         Assert.assertEquals(500, player.getMoney());
         player.setMoney(50);
-        Assert.assertEquals(50, player.getMoney());
+        Assert.assertEquals("Test that the player has the correct amount of money after setting", 50, player.getMoney());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class PlayerTest {
         for (int i = 0; i < 3; i++){
             player.addCard(dealer.dealCard());
         }
-        Assert.assertEquals("Adds 3 cards to the hand list and then displays hand",3, player.getHand().size());
+        Assert.assertEquals("Adds 3 cards to the hand list and makes sure hand array has a size of 3",3, player.getHand().size());
     }
 
     @Test
