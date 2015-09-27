@@ -1,10 +1,9 @@
 package io.illcoder.casinoRoyale.blackjack;
 
 
-import io.illcoder.casinoRoyale.core.Dealer;
-import io.illcoder.casinoRoyale.core.GameControl;
-import io.illcoder.casinoRoyale.core.Player;
+import io.illcoder.casinoRoyale.core.*;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -15,9 +14,17 @@ import java.util.Scanner;
 
 
 public class BlackjackEngine {
+
+
     Dealer dealer = new Dealer();
     private final int BLACKJACK = 21;
     int wager;
+    private Boolean gameOverBool = false;
+    private Boolean win = false;
+
+
+
+
 
     public int getBLACKJACK() {
         return BLACKJACK;
@@ -58,12 +65,27 @@ public class BlackjackEngine {
      * @param user
      *
      */
-    public void checkUserForBust(Player user) {
+    public Boolean checkUserForBust(Player user) {
         if (calcHandTotal(user) > 21) {
-            gameOver(user);
+           gameOver(user);
+            gameOverBool = true;
 
         }
+        return gameOverBool;
     }
+
+
+    /**
+     * Should determine if Ace's value is 1 or 11, not sure how to impliment it though.
+     * @param player
+     * @return
+     */
+//     public int determineValueOfAce(Player player){
+//         Rank.ACE.getBlackjackValue() = 11;
+//         if(calcHandTotal(player) > 21){
+//             Rank.ACE.getBlackjackValue() = 1;
+//         }
+//     }
 
 
     /**
@@ -72,12 +94,23 @@ public class BlackjackEngine {
      * @param user
      * @param cpu
      */
-    public void youWin(Player user, Player cpu) {
+    public Boolean youWin(Player user, Player cpu) {
         if (calcHandTotal(user) > calcHandTotal(cpu) && calcHandTotal(user) <= 21) {
             System.out.println("Congratulations you have won!!!");
             user.setMoney(user.getMoney() + (wager * 2));
-            runGame(user);
+            win = true;
+
+
+
         }
+        GameControl.pause(1);
+        runGame(user);
+        return win;
+
+    }
+    public void youWin(Player user){
+        System.out.println("Congratulations, you have won!!!");
+        user.setMoney(user.getMoney() + (wager * 2));
     }
 
         /**
@@ -86,16 +119,17 @@ public class BlackjackEngine {
 
     public void gameOver(Player user) {
 
-        System.out.println("You lose...");
-        System.out.println("  ________    _____      _____   ___________ ________   ____   _________________________ \n" +
-                " /  _____/   /  _  \\    /     \\  \\_   _____/ \\_____  \\  \\   \\ /   /\\_   _____/\\______   \\\n" +
-                "/   \\  ___  /  /_\\  \\  /  \\ /  \\  |    __)_   /   |   \\  \\   Y   /  |    __)_  |       _/\n" +
-                "\\    \\_\\  \\/    |    \\/    Y    \\ |        \\ /    |    \\  \\     /   |        \\ |    |   \\\n" +
-                " \\______  /\\____|__  /\\____|__  //_______  / \\_______  /   \\___/   /_______  / |____|_  /\n" +
-                "        \\/         \\/         \\/         \\/          \\/                    \\/         \\/ ");
+            System.out.println("You lose...");
+            System.out.println("  ________    _____      _____   ___________ ________   ____   _________________________ \n" +
+                    " /  _____/   /  _  \\    /     \\  \\_   _____/ \\_____  \\  \\   \\ /   /\\_   _____/\\______   \\\n" +
+                    "/   \\  ___  /  /_\\  \\  /  \\ /  \\  |    __)_   /   |   \\  \\   Y   /  |    __)_  |       _/\n" +
+                    "\\    \\_\\  \\/    |    \\/    Y    \\ |        \\ /    |    \\  \\     /   |        \\ |    |   \\\n" +
+                    " \\______  /\\____|__  /\\____|__  //_______  / \\_______  /   \\___/   /_______  / |____|_  /\n" +
+                    "        \\/         \\/         \\/         \\/          \\/                    \\/         \\/ ");
 
 
-        runGame(user);
+
+
     }
 
 
@@ -111,6 +145,9 @@ public class BlackjackEngine {
 
             sum += player.getHand().get(i).getCardBlackjackValue();
         }
+        GameControl.pause(1);
+
+
         return sum;
     }
 
@@ -120,15 +157,22 @@ public class BlackjackEngine {
      * @param user user player
      * @param cpu  computer
      */
-    public void checkBlackjack(Player user, Player cpu) {
+    public Boolean checkBlackjack(Player user, Player cpu) {
         if (calcHandTotal(user) == getBLACKJACK() && calcHandTotal(cpu) == getBLACKJACK()) {
-            System.out.println("Push, try again"); /// Needs to redirect back to begining of game and refund money.
+            System.out.println("Push, try again");
+             user.setMoney(user.getMoney() + wager); // Refunds money.
+            //runGame(user);
         } else if (calcHandTotal(user) == getBLACKJACK()) {
             System.out.println("You have BlackJack!!!");
+
+            return win;
         } else if (calcHandTotal(cpu) == getBLACKJACK()) {
             System.out.println("You lose");
+            gameOverBool = true;
+            gameOver(user);
+            return gameOverBool;
         }
-
+            return true;
 
     }
 
@@ -146,6 +190,8 @@ public class BlackjackEngine {
         switch (userChoice) {
             case 1:
                 hit(user);
+
+                GameControl.pause(1);
                 userChoice(user);
                 checkUserForBust(user);
                 break;
@@ -185,8 +231,9 @@ public class BlackjackEngine {
      *
      * @param player
      */
-    public void displayHand(Player player) {
-        System.out.println("Dealer has: " + player.getHand());
+    public List<Card> displayHand(Player player) {
+        System.out.println(player.getName()+ " has:" + player.getHand());
+        return player.getHand();
     }
 
     /**
@@ -208,6 +255,41 @@ public class BlackjackEngine {
     }
 
     /**
+     * Changes the win Boolean.
+     * @param win
+     */
+    public void setWin(Boolean win) {
+        this.win = win;
+
+    }
+
+
+
+    /**
+     * Changes game over Boolean
+     * @param gameOverBool
+     */
+    public void setGameOverBool(Boolean gameOverBool) {
+        this.gameOverBool = gameOverBool;
+    }
+
+    /**
+     * Returns Game Over Status
+     * @return Boolean for gameover
+     */
+    public Boolean getGameOverBool() {
+        return gameOverBool;
+    }
+
+    /**
+     * Returns Win status
+     * @return Boolean for win.
+     */
+    public Boolean getWin() {
+        return win;
+    }
+
+    /**
      * Shows cpu's hand.
      * @param cpu
      */
@@ -223,6 +305,24 @@ public class BlackjackEngine {
         cpu.addCard(dealer.dealCard());
 
     }
+    public void startGameMessage(Player user, Player cpu){
+        System.out.println("Welcome to Ultimate ");
+        GameControl.pause(1);
+
+        System.out.println("__________ .__                    __          ____.                 __     \n" +
+                "\\______   \\|  |  _____     ____  |  | __     |    |_____     ____  |  | __ \n" +
+                " |    |  _/|  |  \\__  \\  _/ ___\\ |  |/ /     |    |\\__  \\  _/ ___\\ |  |/ / \n" +
+                " |    |   \\|  |__ / __ \\_\\  \\___ |    <  /\\__|    | / __ \\_\\  \\___ |    <  \n" +
+                " |______  /|____/(____  / \\___  >|__|_ \\ \\________|(____  / \\___  >|__|_ \\ \n" +
+                "        \\/            \\/      \\/      \\/                \\/      \\/      \\/ ");
+
+        GameControl.pause(1);
+        /**
+         * Welcome message and display of initial credit
+         */
+        System.out.println(user.getName() + ", you have $" + user.getMoney() + "credit, " +
+                "hope your luckier than the dealer!");
+    }
 ////////////////////////////////////////
 
     /**
@@ -231,7 +331,13 @@ public class BlackjackEngine {
      * @param user takes player input to get player name and amount of Money
      */
     public void runGame(Player user) {
-        Player cpu = new Player();
+        Player cpu = new Player("Dealer");
+
+        //Clears both players hands if continuing from last game.
+        user.getHand().clear();
+        cpu.getHand().clear();
+
+
 
 
         System.out.println("Starting BlackJack... ");
@@ -240,22 +346,10 @@ public class BlackjackEngine {
         Boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.println("Welcome to Ultimate ");
-            GameControl.pause(1);
 
-            System.out.println("__________ .__                    __          ____.                 __     \n" +
-                    "\\______   \\|  |  _____     ____  |  | __     |    |_____     ____  |  | __ \n" +
-                    " |    |  _/|  |  \\__  \\  _/ ___\\ |  |/ /     |    |\\__  \\  _/ ___\\ |  |/ / \n" +
-                    " |    |   \\|  |__ / __ \\_\\  \\___ |    <  /\\__|    | / __ \\_\\  \\___ |    <  \n" +
-                    " |______  /|____/(____  / \\___  >|__|_ \\ \\________|(____  / \\___  >|__|_ \\ \n" +
-                    "        \\/            \\/      \\/      \\/                \\/      \\/      \\/ ");
+            startGameMessage(user, cpu);
 
-            GameControl.pause(1);
-            /**
-             * Welcome message and display of initial credit
-             */
-            System.out.println(user.getName() + ", you have $" + user.getMoney() + "credit, " +
-                    "hope your luckier than the dealer!");
+
             if (user.getMoney() > 0) {
                 takeWager(user);
 
@@ -266,6 +360,7 @@ public class BlackjackEngine {
 
 
             displayInitialHands(user, cpu);
+
 
             checkBlackjack(user, cpu);
 
@@ -289,6 +384,7 @@ public class BlackjackEngine {
 
             showHands(cpu);
 
+
             /**
              * Checks to see if computer has to hit or not
              */
@@ -296,6 +392,7 @@ public class BlackjackEngine {
             if (calcHandTotal(cpu) < 17) {
 
                 hit(cpu);
+               
                 checkUserForBust(cpu);
 
             }
@@ -307,19 +404,17 @@ public class BlackjackEngine {
              */
 
             GameControl.pause(2);
+
+
+
             if (calcHandTotal(user) > calcHandTotal(cpu) && calcHandTotal(user) <= 21) {
                 System.out.println("Congratulations you have won!!!");
                 user.setMoney(user.getMoney() + (wager * 2));
             } else {
-                System.out.println("You lose...");
-                System.out.println("  ________    _____      _____   ___________ ________   ____   _________________________ \n" +
-                        " /  _____/   /  _  \\    /     \\  \\_   _____/ \\_____  \\  \\   \\ /   /\\_   _____/\\______   \\\n" +
-                        "/   \\  ___  /  /_\\  \\  /  \\ /  \\  |    __)_   /   |   \\  \\   Y   /  |    __)_  |       _/\n" +
-                        "\\    \\_\\  \\/    |    \\/    Y    \\ |        \\ /    |    \\  \\     /   |        \\ |    |   \\\n" +
-                        " \\______  /\\____|__  /\\____|__  //_______  / \\_______  /   \\___/   /_______  / |____|_  /\n" +
-                        "        \\/         \\/         \\/         \\/          \\/                    \\/         \\/ ");
+               gameOver(user);
             }
-
+            GameControl.pause(5);
+            runGame(user);
 
         }
 
