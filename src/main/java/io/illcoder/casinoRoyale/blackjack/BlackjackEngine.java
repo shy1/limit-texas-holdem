@@ -2,6 +2,7 @@ package io.illcoder.casinoRoyale.blackjack;
 
 
 import io.illcoder.casinoRoyale.core.Dealer;
+import io.illcoder.casinoRoyale.core.GameControl;
 import io.illcoder.casinoRoyale.core.Player;
 
 import java.util.Scanner;
@@ -34,13 +35,20 @@ public class BlackjackEngine {
     public void takeWager(Player player) {
         System.out.println("Please make your wager  ");
         wager = scan.nextInt();
-        player.setMoney(player.getMoney() - wager);
+        if (wager > player.getMoney()){
+            System.out.println("We extend no credit here scrub!!");
+            GameControl.pause();
+            takeWager(player);
+
+        } else {
+
+            player.setMoney(player.getMoney() - wager);
 
 
-        System.out.println("Your wager of " + " $" + wager + " has been accepted you cheapskate!!");
-        System.out.println("$" + player.getMoney());
+            System.out.println("Your wager of " + " $" + wager + " has been accepted you cheapskate!!");
+            System.out.println("$" + player.getMoney());
 
-
+        }
     }
 
 
@@ -50,7 +58,7 @@ public class BlackjackEngine {
      * @param user
      *
      */
-    public void checkUserForBust(Player user, Player cpu) {
+    public void checkUserForBust(Player user) {
         if (calcHandTotal(user) > 21) {
             gameOver(user);
 
@@ -139,6 +147,7 @@ public class BlackjackEngine {
             case 1:
                 hit(user);
                 userChoice(user);
+                checkUserForBust(user);
                 break;
             case 2:
                 stay();
@@ -232,6 +241,7 @@ public class BlackjackEngine {
 
         while (continueLoop) {
             System.out.println("Welcome to Ultimate ");
+            GameControl.pause(1);
 
             System.out.println("__________ .__                    __          ____.                 __     \n" +
                     "\\______   \\|  |  _____     ____  |  | __     |    |_____     ____  |  | __ \n" +
@@ -240,7 +250,7 @@ public class BlackjackEngine {
                     " |______  /|____/(____  / \\___  >|__|_ \\ \\________|(____  / \\___  >|__|_ \\ \n" +
                     "        \\/            \\/      \\/      \\/                \\/      \\/      \\/ ");
 
-
+            GameControl.pause(1);
             /**
              * Welcome message and display of initial credit
              */
@@ -250,6 +260,7 @@ public class BlackjackEngine {
                 takeWager(user);
 
             }
+            GameControl.pause(1);
 
             dealHands(user, cpu);
 
@@ -257,6 +268,8 @@ public class BlackjackEngine {
             displayInitialHands(user, cpu);
 
             checkBlackjack(user, cpu);
+
+            GameControl.pause();
 
 
             System.out.println("Would you like to HIT(1) or STAY(2)");
@@ -266,7 +279,9 @@ public class BlackjackEngine {
             User switch statement.
              */
             userChoice(user);
-            checkUserForBust(user, cpu);
+            checkUserForBust(user);
+
+            GameControl.pause();
 
             /**
              * Displays cpu's hand before he hits.
@@ -277,10 +292,11 @@ public class BlackjackEngine {
             /**
              * Checks to see if computer has to hit or not
              */
-
+            GameControl.pause();
             if (calcHandTotal(cpu) < 17) {
 
                 hit(cpu);
+                checkUserForBust(cpu);
 
             }
 
@@ -289,6 +305,8 @@ public class BlackjackEngine {
             /**
              * Calculates the game total and selects a winner and gives the user money if they win.
              */
+
+            GameControl.pause(2);
             if (calcHandTotal(user) > calcHandTotal(cpu) && calcHandTotal(user) <= 21) {
                 System.out.println("Congratulations you have won!!!");
                 user.setMoney(user.getMoney() + (wager * 2));
