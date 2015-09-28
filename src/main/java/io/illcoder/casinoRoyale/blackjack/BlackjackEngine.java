@@ -26,6 +26,8 @@ public class BlackjackEngine {
 
 
 
+
+
     public int getBLACKJACK() {
         return BLACKJACK;
     }
@@ -309,6 +311,7 @@ public class BlackjackEngine {
         System.out.println("Welcome to Ultimate ");
         GameControl.pause(1);
 
+
         System.out.println("__________ .__                    __          ____.                 __     \n" +
                 "\\______   \\|  |  _____     ____  |  | __     |    |_____     ____  |  | __ \n" +
                 " |    |  _/|  |  \\__  \\  _/ ___\\ |  |/ /     |    |\\__  \\  _/ ___\\ |  |/ / \n" +
@@ -355,7 +358,6 @@ public class BlackjackEngine {
 
             }
             GameControl.pause(1);
-
             dealHands(user, cpu);
 
 
@@ -413,7 +415,7 @@ public class BlackjackEngine {
             } else {
                gameOver(user);
             }
-            GameControl.pause(5);
+            GameControl.pause(2);
             runGame(user);
 
         }
