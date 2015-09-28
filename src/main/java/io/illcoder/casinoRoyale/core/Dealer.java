@@ -21,19 +21,19 @@ public class Dealer {
      * Starts a game depending on the gameType argument that is passed.
      *
      *
-    public void startGame(int _gametype, Player _user) {
-        switch (_gametype) {
-            case 1:
-                BlackjackEngine game = new BlackjackEngine;
-                game.runGame(_user);
-                break;
-            case 2:
-                PokerEngine game = new PokerEngine;
-                game.runGame(_user);
-                break;
-        }
+     public void startGame(int _gametype, Player _user) {
+     switch (_gametype) {
+     case 1:
+     BlackjackEngine game = new BlackjackEngine;
+     game.runGame(_user);
+     break;
+     case 2:
+     PokerEngine game = new PokerEngine;
+     game.runGame(_user);
+     break;
      }
-*/
+     }
+     */
 
     /**
      * Deals a single card from the deck array and increments
