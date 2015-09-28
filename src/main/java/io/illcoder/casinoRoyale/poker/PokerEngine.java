@@ -76,7 +76,8 @@ public class PokerEngine {
 
     public void nextHand() {
         clearAllHands();
-
+        dealer.shuffleDeck();
+        System.out.println(dealer.getCardIndex());
         if (sb.getName().equalsIgnoreCase("CPU")) {
             sb = user;
             bb = cpu;
@@ -88,7 +89,6 @@ public class PokerEngine {
         pot = smallBlind + bigBlind;
         sb.setMoney(sb.getMoney() - smallBlind);
         bb.setMoney(bb.getMoney() - bigBlind);
-        dealer.shuffleDeck();
         dealHoleCards();
 
         preflop();
@@ -117,7 +117,7 @@ public class PokerEngine {
     }
 
     public void updateDisplay() {
-        System.out.println("Pot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
+        System.out.println("\nPot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
         " - " + user.getName() + ": $" + user.getMoney());
 
         if (user.getHand().size() > 0){
@@ -128,39 +128,67 @@ public class PokerEngine {
         }
     }
 
+    public void displayPot(){
+        System.out.println("Pot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
+                " - " + user.getName() + ": $" + user.getMoney());
+    }
+
     public void preflop(){
         raiseCount = 0;
+        System.out.println("Dealing hole cards...");
+        gc.pause();
         updateDisplay();
-        sbActionComplete(smallBlind, bigBlind);
+        sbActionCompleteBlind(smallBlind, bigBlind);
 
     }
 
     public void flop(){
-
+        raiseCount = 0;
+        System.out.println("Dealing flop...");
+        burn.addCard(dealer.dealCard());
+        board.addCard(dealer.dealCard());
+        board.addCard(dealer.dealCard());
+        board.addCard(dealer.dealCard());
+        System.out.println(dealer.getCardIndex());
+        gc.pause();
+        updateDisplay();
+        bbActionNoBet(bigBlind);
     }
 
     public void turn(){
-
+        raiseCount = 0;
+        System.out.println("Dealing turn...");
+        burn.addCard(dealer.dealCard());
+        board.addCard(dealer.dealCard());
+        gc.pause();
+        updateDisplay();
+        bbActionNoBet(bigBet);
     }
 
     public void river(){
-
+        raiseCount = 0;
+        System.out.println("Dealing river...");
+        burn.addCard(dealer.dealCard());
+        board.addCard(dealer.dealCard());
+        gc.pause();
+        updateDisplay();
+        bbActionNoBet(bigBet);
     }
 
     public void checkMessage(Player _player) {
         System.out.println("\n" + _player.getName() + " checks.");
     }
-
     public void callMessage(Player _player) {
         System.out.println("\n" + _player.getName() + " calls.");
     }
-
     public void raiseMessage(Player _player) {
         System.out.println("\n" + _player.getName() + " raises.");
     }
-
     public void foldMessage(Player _player) {
         System.out.println("\n" + _player.getName() + " folds.");
+    }
+    public void betMessage(Player _player) {
+        System.out.println("\n" + _player.getName() + " bets.");
     }
 
     /**
@@ -185,7 +213,6 @@ public class PokerEngine {
                     pot = pot + prevBetSize;
                     sb.setMoney(sb.getMoney() - prevBetSize);
                     callMessage(sb);
-                    updateDisplay();
                     break;
                 case 2:
                     sb.getHand().clear();
@@ -213,14 +240,13 @@ public class PokerEngine {
                     pot = pot + prevBetSize;
                     sb.setMoney(sb.getMoney() - prevBetSize);
                     callMessage(sb);
-                    updateDisplay();
                     break;
                 case 2:
                     raiseCount++;
                     pot = pot + prevBetSize + betSize;
                     sb.setMoney(sb.getMoney() - prevBetSize - betSize);
                     raiseMessage(sb);
-                    updateDisplay();
+                    displayPot();
                     bbActionFacingBet(betSize, betSize);
                     break;
                 case 3:
@@ -237,7 +263,7 @@ public class PokerEngine {
         }
     }
 
-    public void sbActionComplete(int prevBetSize, int betSize) {
+    public void sbActionCompleteBlind(int prevBetSize, int betSize) {
         //System.out.println(" ");
         if (raiseCount > 3) {
             if (sb.getName().equalsIgnoreCase("CPU")) {
@@ -252,7 +278,6 @@ public class PokerEngine {
                     pot = pot + (betSize / 2);
                     sb.setMoney(sb.getMoney() - prevBetSize);
                     callMessage(sb);
-                    updateDisplay();
                     bbActionAfterComplete(betSize);
                     break;
                 case 2:
@@ -263,7 +288,7 @@ public class PokerEngine {
                     break;
                 default:
                     System.out.println("Invalid input.\n");
-                    sbActionComplete(prevBetSize, betSize);
+                    sbActionCompleteBlind(prevBetSize, betSize);
                     break;
             }
 
@@ -280,7 +305,6 @@ public class PokerEngine {
                     pot = pot + prevBetSize;
                     sb.setMoney(sb.getMoney() - prevBetSize);
                     callMessage(sb);
-                    updateDisplay();
                     bbActionAfterComplete(betSize);
                     break;
                 case 2:
@@ -288,7 +312,7 @@ public class PokerEngine {
                     pot = pot + prevBetSize + betSize;
                     sb.setMoney(sb.getMoney() - prevBetSize - betSize);
                     raiseMessage(sb);
-                    updateDisplay();
+                    displayPot();
                     bbActionFacingBet(betSize, betSize);
                     break;
                 case 3:
@@ -299,14 +323,42 @@ public class PokerEngine {
                     break;
                 default:
                     System.out.println("Invalid input.\n");
-                    sbActionComplete(prevBetSize, betSize);
+                    sbActionCompleteBlind(prevBetSize, betSize);
                     break;
             }
         }
     }
 
     public void sbActionNoBet(int betSize){
+        if (sb.getName().equalsIgnoreCase("CPU")) {
+            Random rand = new Random();
+            action = rand.nextInt(2) + 1;
+        } else {
+            System.out.println("\nEnter 1 to CHECK, 2 to BET, 3 to FOLD.");
+            action = scan.nextInt();
+        }
+        switch (action) {
+            case 1:
+                checkMessage(sb);
+                break;
+            case 2:
+                pot = pot + betSize;
+                sb.setMoney(sb.getMoney() - betSize);
+                betMessage(sb);
+                displayPot();
+                bbActionFacingBet(betSize, betSize);
+                break;
+            case 3:
+                sb.getHand().clear();
+                foldMessage(sb);
+                playerFolded = true;
 
+                break;
+            default:
+                System.out.println("Invalid input.\n");
+                sbActionNoBet(betSize);
+                break;
+        }
     }
 
     public void bbActionFacingBet(int prevBetSize, int betSize) {
@@ -324,7 +376,6 @@ public class PokerEngine {
                     pot = pot + prevBetSize;
                     bb.setMoney(bb.getMoney() - prevBetSize);
                     callMessage(bb);
-                    updateDisplay();
                     break;
                 case 2:
                     bb.getHand().clear();
@@ -351,14 +402,13 @@ public class PokerEngine {
                     pot = pot + prevBetSize;
                     bb.setMoney(bb.getMoney() - prevBetSize);
                     callMessage(bb);
-                    updateDisplay();
                     break;
                 case 2:
                     raiseCount++;
                     pot = pot + prevBetSize + betSize;
                     bb.setMoney(bb.getMoney() - prevBetSize - betSize);
                     raiseMessage(bb);
-                    updateDisplay();
+                    displayPot();
                     sbActionFacingBet(betSize, betSize);
                     break;
                 case 3:
@@ -391,14 +441,13 @@ public class PokerEngine {
         switch (action) {
             case 1:
                 checkMessage(bb);
-                updateDisplay();
                 break;
             case 2:
                 raiseCount++;
                 pot = pot + betSize;
                 bb.setMoney(bb.getMoney() - betSize);
                 raiseMessage(bb);
-                updateDisplay();
+                displayPot();
                 sbActionFacingBet(betSize, betSize);
                 break;
             case 3:
@@ -419,21 +468,19 @@ public class PokerEngine {
             Random rand = new Random();
             action = rand.nextInt(2) + 1;
         } else {
-            System.out.println("\nEnter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
+            System.out.println("\nEnter 1 to CHECK, 2 to BET, 3 to FOLD.");
             action = scan.nextInt();
         }
         switch (action) {
             case 1:
                 checkMessage(bb);
-                updateDisplay();
                 sbActionNoBet(betSize);
                 break;
             case 2:
-                raiseCount++;
                 pot = pot + betSize;
                 bb.setMoney(bb.getMoney() - betSize);
-                raiseMessage(bb);
-                updateDisplay();
+                betMessage(bb);
+                displayPot();
                 sbActionFacingBet(betSize, betSize);
                 break;
             case 3:

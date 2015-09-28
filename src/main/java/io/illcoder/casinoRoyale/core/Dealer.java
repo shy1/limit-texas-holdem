@@ -48,9 +48,15 @@ public class Dealer {
 
     /**
      * Shuffles the cardDeck arraylist by calling the deck class's shuffleDeck function
+     * and resets the cardIndex counter.
      */
     public void shuffleDeck() {
         deck.shuffleDeck(cardDeck);
+        cardIndex = 0;
+    }
+
+    public int getCardIndex(){
+        return cardIndex;
     }
 
     /**
