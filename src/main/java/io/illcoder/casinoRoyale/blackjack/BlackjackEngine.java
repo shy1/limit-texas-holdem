@@ -166,7 +166,7 @@ public class BlackjackEngine {
             //runGame(user);
         } else if (calcHandTotal(user) == getBLACKJACK()) {
             System.out.println("You have BlackJack!!!");
-
+            win = true;
             return win;
         } else if (calcHandTotal(cpu) == getBLACKJACK()) {
             System.out.println("You lose");
