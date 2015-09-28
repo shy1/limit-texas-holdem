@@ -320,6 +320,10 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * may need separate methods for dealing with preflop completed small blinds and other opportunities to check
+     * @param betSize
+     */
     public void bbActionNoBet(int betSize){
         if (bb.getName().equalsIgnoreCase("CPU")) {
             Random rand = new Random();
