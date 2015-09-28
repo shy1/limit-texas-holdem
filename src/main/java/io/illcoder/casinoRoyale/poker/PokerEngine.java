@@ -127,102 +127,62 @@ public class PokerEngine {
         if (raiseCount > 3) {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(2) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(2) + 1;
             } else {
                 System.out.println("Enter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + (betSize / 2);
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
             }
+            switch (action) {
+                case 1:
+                    pot = pot + prevBetSize;
+                    sb.setMoney(sb.getMoney() - prevBetSize);
+                    callMessage(sb);
+                    updateDisplay();
+                    break;
+                case 2:
+                    sb.getHand().clear();
+                    foldMessage(sb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    sbActionFacingBet(prevBetSize, betSize);
+                    break;
+                }
+
         } else {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(3) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(sb);
-                        updateDisplay();
-                        bbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(3) + 1;
+
             } else {
                 System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(sb);
-                        updateDisplay();
-                        bbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+            }
+            switch (action) {
+                case 1:
+                    pot = pot + prevBetSize;
+                    sb.setMoney(sb.getMoney() - prevBetSize);
+                    callMessage(sb);
+                    updateDisplay();
+                    break;
+                case 2:
+                    raiseCount++;
+                    pot = pot + prevBetSize + betSize;
+                    sb.setMoney(sb.getMoney() - prevBetSize - betSize);
+                    raiseMessage(sb);
+                    updateDisplay();
+                    bbActionFacingBet(betSize, betSize);
+                    break;
+                case 3:
+                    sb.getHand().clear();
+                    foldMessage(sb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    sbActionFacingBet(prevBetSize, betSize);
+                    break;
             }
         }
     }
@@ -232,104 +192,62 @@ public class PokerEngine {
         if (raiseCount > 3) {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(2) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionPreflopComplete(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(2) + 1;
             } else {
                 System.out.println("Enter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + (betSize / 2);
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionPreflopComplete(prevBetSize, betSize);
-                        break;
-                }
             }
+            switch (action) {
+                case 1:
+                    pot = pot + (betSize / 2);
+                    sb.setMoney(sb.getMoney() - prevBetSize);
+                    callMessage(sb);
+                    updateDisplay();
+                    break;
+                case 2:
+                    sb.getHand().clear();
+                    foldMessage(sb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    sbActionPreflopComplete(prevBetSize, betSize);
+                    break;
+            }
+
         } else {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(3) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        bbActionNoBet(betSize);
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(sb);
-                        updateDisplay();
-                        bbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionPreflopComplete(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(3) + 1;
             } else {
                 System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize);
-                        callMessage(sb);
-                        updateDisplay();
-                        bbActionNoBet(betSize);
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(sb);
-                        updateDisplay();
-                        bbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        sb.getHand().clear();
-                        foldMessage(sb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        sbActionPreflopComplete(prevBetSize, betSize);
-                        break;
-                }
+            }
+            switch (action) {
+                case 1:
+                    pot = pot + prevBetSize;
+                    sb.setMoney(sb.getMoney() - prevBetSize);
+                    callMessage(sb);
+                    updateDisplay();
+                    bbActionNoBet(betSize);
+                    break;
+                case 2:
+                    raiseCount++;
+                    pot = pot + prevBetSize + betSize;
+                    sb.setMoney(sb.getMoney() - prevBetSize - betSize);
+                    raiseMessage(sb);
+                    updateDisplay();
+                    bbActionFacingBet(betSize, betSize);
+                    break;
+                case 3:
+                    sb.getHand().clear();
+                    foldMessage(sb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    sbActionPreflopComplete(prevBetSize, betSize);
+                    break;
             }
         }
     }
@@ -343,102 +261,61 @@ public class PokerEngine {
         if (raiseCount > 3) {
             if (bb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(2) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize);
-                        callMessage(bb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        bb.getHand().clear();
-                        foldMessage(bb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        bbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(2) + 1;
             } else {
                 System.out.println("Enter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize);
-                        callMessage(bb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        bb.getHand().clear();
-                        foldMessage(bb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        bbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
             }
+            switch (action) {
+                case 1:
+                    pot = pot + prevBetSize;
+                    bb.setMoney(bb.getMoney() - prevBetSize);
+                    callMessage(bb);
+                    updateDisplay();
+                    break;
+                case 2:
+                    bb.getHand().clear();
+                    foldMessage(bb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    bbActionFacingBet(prevBetSize, betSize);
+                    break;
+            }
+
         } else {
             if (bb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
-                int cpuAction = rand.nextInt(3) + 1;
-                switch (cpuAction) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize);
-                        callMessage(bb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(bb);
-                        updateDisplay();
-                        sbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        bb.getHand().clear();
-                        foldMessage(bb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        bbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+                action = rand.nextInt(3) + 1;
             } else {
                 System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
-                switch (action) {
-                    case 1:
-                        pot = pot + prevBetSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize);
-                        callMessage(bb);
-                        updateDisplay();
-                        break;
-                    case 2:
-                        raiseCount++;
-                        pot = pot + prevBetSize + betSize;
-                        bb.setMoney(bb.getMoney() - prevBetSize - betSize);
-                        raiseMessage(bb);
-                        updateDisplay();
-                        sbActionFacingBet(betSize, betSize);
-                        break;
-                    case 3:
-                        bb.getHand().clear();
-                        foldMessage(bb);
-                        determineWinner();
-                        break;
-                    default:
-                        System.out.println("Invalid input.\n");
-                        bbActionFacingBet(prevBetSize, betSize);
-                        break;
-                }
+            }
+            switch (action) {
+                case 1:
+                    pot = pot + prevBetSize;
+                    bb.setMoney(bb.getMoney() - prevBetSize);
+                    callMessage(bb);
+                    updateDisplay();
+                    break;
+                case 2:
+                    raiseCount++;
+                    pot = pot + prevBetSize + betSize;
+                    bb.setMoney(bb.getMoney() - prevBetSize - betSize);
+                    raiseMessage(bb);
+                    updateDisplay();
+                    sbActionFacingBet(betSize, betSize);
+                    break;
+                case 3:
+                    bb.getHand().clear();
+                    foldMessage(bb);
+                    determineWinner();
+                    break;
+                default:
+                    System.out.println("Invalid input.\n");
+                    bbActionFacingBet(prevBetSize, betSize);
+                    break;
             }
         }
     }
@@ -446,56 +323,33 @@ public class PokerEngine {
     public void bbActionNoBet(int betSize){
         if (bb.getName().equalsIgnoreCase("CPU")) {
             Random rand = new Random();
-            int cpuAction = rand.nextInt(2) + 1;
-            switch (cpuAction) {
-                case 1:
-                    checkMessage(bb);
-                    updateDisplay();
-                    break;
-                case 2:
-                    raiseCount++;
-                    pot = pot + betSize;
-                    bb.setMoney(bb.getMoney() - betSize);
-                    raiseMessage(bb);
-                    updateDisplay();
-                    sbActionFacingBet(betSize, betSize);
-                    break;
-                case 3:
-                    sb.getHand().clear();
-                    foldMessage(bb);
-                    determineWinner();
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    bbActionNoBet(betSize);
-                    break;
-            }
+            action = rand.nextInt(2) + 1;
         } else {
             System.out.println("Enter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
             action = scan.nextInt();
-            switch (action) {
-                case 1:
-                    checkMessage(bb);
-                    updateDisplay();
-                    break;
-                case 2:
-                    raiseCount++;
-                    pot = pot + betSize;
-                    bb.setMoney(bb.getMoney() - betSize);
-                    raiseMessage(bb);
-                    updateDisplay();
-                    sbActionFacingBet(betSize, betSize);
-                    break;
-                case 3:
-                    sb.getHand().clear();
-                    foldMessage(bb);
-                    determineWinner();
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    bbActionNoBet(betSize);
-                    break;
-            }
+        }
+        switch (action) {
+            case 1:
+                checkMessage(bb);
+                updateDisplay();
+                break;
+            case 2:
+                raiseCount++;
+                pot = pot + betSize;
+                bb.setMoney(bb.getMoney() - betSize);
+                raiseMessage(bb);
+                updateDisplay();
+                sbActionFacingBet(betSize, betSize);
+                break;
+            case 3:
+                sb.getHand().clear();
+                foldMessage(bb);
+                determineWinner();
+                break;
+            default:
+                System.out.println("Invalid input.\n");
+                bbActionNoBet(betSize);
+                break;
         }
     }
 
