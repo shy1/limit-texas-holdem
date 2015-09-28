@@ -77,7 +77,7 @@ public class PokerEngine {
     public void nextHand() {
         clearAllHands();
         dealer.shuffleDeck();
-        System.out.println(dealer.getCardIndex());
+        //System.out.println(dealer.getCardIndex());
         if (sb.getName().equalsIgnoreCase("CPU")) {
             sb = user;
             bb = cpu;
@@ -525,6 +525,7 @@ public class PokerEngine {
         }
 
     }
+
 
     public static void main(String[] args) {
         Player aPlayer = new Player("Seth");
