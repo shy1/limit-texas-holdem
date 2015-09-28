@@ -68,7 +68,7 @@ public class Card {
      * @return
      */
     public String toString(){
-        return "This Card is the " + rank + " of " + suit;
+        return rank + " of " + suit;
     }
 
 
