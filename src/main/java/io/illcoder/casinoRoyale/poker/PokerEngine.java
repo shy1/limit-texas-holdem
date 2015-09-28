@@ -50,7 +50,7 @@ public class PokerEngine {
 
     public void playerContinue() {
         System.out.println("\nWould you like to play another hand " + user.getName() + "? You currently have $" +
-                user.getMoney() + " in chips.\nEnter 1 to play or 2 to quit.");
+                user.getMoney() + " in chips.\n\nEnter 1 to play or 2 to quit.");
         int userChoice = scan.nextInt();
 
         switch (userChoice) {
@@ -177,7 +177,7 @@ public class PokerEngine {
                 Random rand = new Random();
                 action = rand.nextInt(2) + 1;
             } else {
-                System.out.println("Enter 1 to CALL, 2 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -205,7 +205,7 @@ public class PokerEngine {
                 action = rand.nextInt(3) + 1;
 
             } else {
-                System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -244,7 +244,7 @@ public class PokerEngine {
                 Random rand = new Random();
                 action = rand.nextInt(2) + 1;
             } else {
-                System.out.println("Enter 1 to CALL, 2 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -272,7 +272,7 @@ public class PokerEngine {
                 Random rand = new Random();
                 action = rand.nextInt(3) + 1;
             } else {
-                System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -316,7 +316,7 @@ public class PokerEngine {
                 Random rand = new Random();
                 action = rand.nextInt(2) + 1;
             } else {
-                System.out.println("Enter 1 to CALL, 2 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -343,7 +343,7 @@ public class PokerEngine {
                 Random rand = new Random();
                 action = rand.nextInt(3) + 1;
             } else {
-                System.out.println("Enter 1 to CALL, 2 to RAISE, 3 to FOLD.");
+                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
                 action = scan.nextInt();
             }
             switch (action) {
@@ -385,7 +385,7 @@ public class PokerEngine {
             Random rand = new Random();
             action = rand.nextInt(2) + 1;
         } else {
-            System.out.println("Enter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
+            System.out.println("\nEnter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
             action = scan.nextInt();
         }
         switch (action) {
@@ -419,7 +419,7 @@ public class PokerEngine {
             Random rand = new Random();
             action = rand.nextInt(2) + 1;
         } else {
-            System.out.println("Enter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
+            System.out.println("\nEnter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
             action = scan.nextInt();
         }
         switch (action) {
