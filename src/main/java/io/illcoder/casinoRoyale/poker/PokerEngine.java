@@ -93,25 +93,25 @@ public class PokerEngine {
 
         preflop();
 
-        if (playerFolded == true) {
+        if (playerFolded) {
             determineWinner();
             return;
         } else {
             flop();
         }
 
-        if (playerFolded == true) {
+        if (playerFolded) {
             determineWinner();
             return;
         } else {
             turn();
         }
 
-        if (playerFolded == true) {
+        if (playerFolded) {
             determineWinner();
-            return;
         } else {
             river();
+            determineWinner();
         }
 
     }
