@@ -14,32 +14,35 @@ import java.util.List;
  * class to evaluate hand strength
  */
 public class Hand {
-    private List<Card> theHand;
+
     private int[] value;
+    private static List<Card> hand1 = new ArrayList<Card>();
+    private static List<Card> hand2 = new ArrayList<Card>();
+
+//    public Hand(List<Card> _hand) {
+//        theHand = _hand;
+//        value = new int[6];
+//
+//
+//
+//        int[] cardRanks = new int[15];
+//
+//        for (int i = 0; i < 15; i++) {
+//            cardRanks[i] = 0;
+//        }
+//
+//        for (int j = 0; j < 5; j++){
+//            Card card = theHand.get(j);
+//            cardRanks[card.getCardPokerValue()]++;
+//            System.out.println(card.getCardPokerValue());
+//        }
+//    }
 
     public Hand(List<Card> _hand) {
-        theHand = _hand;
+        //Dealer dealer = new Dealer();
         value = new int[6];
-
-
-
-        int[] cardRanks = new int[15];
-
-        for (int i = 0; i < 15; i++) {
-            cardRanks[i] = 0;
-        }
-
-        for (int j = 0; j < 5; j++){
-            Card card = theHand.get(j);
-            cardRanks[card.getCardPokerValue()]++;
-            System.out.println(card.getCardPokerValue());
-        }
-    }
-
-    public Hand() {
-        Dealer dealer = new Dealer();
-        value = new int[6];
-        theHand = new ArrayList<Card>();
+        // theHand = new ArrayList<Card>();
+        // List<Card> hand2 = new ArrayList<Card>();
         int sameRanks = 1;
         int sameRanks2 = 1;
         int smallRankValue = 0;
@@ -47,23 +50,17 @@ public class Hand {
         boolean flush = true;
         boolean straight = false;
         int topStraightRank = 0;
+        int[] highCardRanks = new int[5];
+        int idx = 0;
 
 //        for (int k = 0; k < 5; k++){
 //            theHand.add(dealer.dealCard());
 //        }
-        Card card1 = new Card(Suit.CLUBS, Rank.ACE);
-        Card card2 = new Card(Suit.CLUBS, Rank.TEN);
-        Card card3 = new Card(Suit.SPADES, Rank.TEN);
-        Card card4 = new Card(Suit.CLUBS, Rank.KING);
-        Card card5 = new Card(Suit.CLUBS, Rank.QUEEN);
-        theHand.add(card1);
-        theHand.add(card2);
-        theHand.add(card3);
-        theHand.add(card4);
-        theHand.add(card5);
-        int[] cardRanks = new int[15];
+        List<Card> theHand = _hand;
 
         // array to hold counts of each card rank
+        int[] cardRanks = new int[15];
+
         for (int i = 0; i < 15; i++) {
             cardRanks[i] = 0;
         }
@@ -111,12 +108,91 @@ public class Hand {
                 sameRanks2 = cardRanks[m];
                 smallRankValue = m;
             }
+
+            if (cardRanks[m] == 1){
+                highCardRanks[idx] = m;
+                idx++;
+            }
         }
         System.out.println(sameRanks + ":" + largeRankValue + "\n" + sameRanks2 + ":" + smallRankValue);
+        System.out.println(Arrays.toString(highCardRanks));
+
+        /**
+         * assign hand rankings
+         */
+
+        // no pair
+        if (sameRanks == 1){
+            value[0] = 1;
+            value[1] = highCardRanks[0];
+            value[2] = highCardRanks[1];
+            value[3] = highCardRanks[2];
+            value[4] = highCardRanks[3];
+            value[5] = highCardRanks[4];
+        }
+
+        // one pair
+        if(sameRanks == 2 && sameRanks2 == 1){
+            value[0] = 2;
+            value[1] = largeRankValue;
+            value[2] = highCardRanks[0];
+            value[3] = highCardRanks[1];
+            value[4] = highCardRanks[2];
+        }
+
+        // two pair
+        if(sameRanks == 2 && sameRanks2 == 2){
+            value[0] = 3;
+            value[1] = largeRankValue > smallRankValue ? largeRankValue : smallRankValue;
+            value[2] = largeRankValue < smallRankValue ? largeRankValue : smallRankValue;
+            value[3] = highCardRanks[0];
+        }
+
+        // trips
+        if(sameRanks == 3 && sameRanks2 != 2){
+            value[0] = 4;
+            value[1] = largeRankValue;
+            value[2] = highCardRanks[0];
+            value[3] = highCardRanks[1];
+        }
+
+        if(straight){
+            value[0] = 5;
+            value[1] = topStraightRank;
+        }
+
+        if(flush){
+            value[0] = 6;
+            value[1] = highCardRanks[0];
+            value[2] = highCardRanks[1];
+            value[3] = highCardRanks[2];
+            value[4] = highCardRanks[3];
+            value[5] = highCardRanks[4];
+        }
+
+        // full house
+        if(sameRanks == 3 && sameRanks2 == 2){
+            value[0]=7;
+            value[1]=largeRankValue;
+            value[2]=smallRankValue;
+        }
+
+        // quads
+        if (sameRanks == 4){
+            value[0] = 8;
+            value[1] = largeRankValue;
+            value[2] = highCardRanks[0];
+        }
+
+        // straight flush
+        if (straight && flush){
+            value[0] = 9;
+            value[1] = topStraightRank;
+        }
     }
 
     public List<Card> getTheHand(){
-        return theHand;
+        return hand1;
     }
 
     public int compare(Hand compHand) {
@@ -130,6 +206,32 @@ public class Hand {
     }
 
     public static void main(String[] args) {
-        Hand hand = new Hand();
+
+
+        Card card1 = new Card(Suit.CLUBS, Rank.ACE);
+        Card card2 = new Card(Suit.CLUBS, Rank.TEN);
+        Card card3 = new Card(Suit.CLUBS, Rank.KING);
+        Card card4 = new Card(Suit.CLUBS, Rank.QUEEN);
+        Card card5 = new Card(Suit.CLUBS, Rank.JACK);
+        hand1.add(card1);
+        hand1.add(card2);
+        hand1.add(card3);
+        hand1.add(card4);
+        hand1.add(card5);
+
+        Card card11 = new Card(Suit.CLUBS, Rank.ACE);
+        Card card22 = new Card(Suit.CLUBS, Rank.TEN);
+        Card card33 = new Card(Suit.CLUBS, Rank.JACK);
+        Card card44 = new Card(Suit.CLUBS, Rank.KING);
+        Card card55 = new Card(Suit.CLUBS, Rank.QUEEN);
+        hand2.add(card11);
+        hand2.add(card22);
+        hand2.add(card33);
+        hand2.add(card44);
+        hand2.add(card55);
+
+        Hand handOne = new Hand(hand1);
+        Hand handTwo = new Hand(hand2);
+        System.out.println(handOne.compare(handTwo));
     }
 }
