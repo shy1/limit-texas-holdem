@@ -161,7 +161,7 @@ public class PokerEngine {
         System.out.println("Dealing turn...");
         burn.addCard(dealer.dealCard());
         board.addCard(dealer.dealCard());
-        System.out.println(board.getHandCard(3));
+        System.out.println("     [" + board.getHandCard(3) + "]");
         gc.pause();
         updateDisplay();
         bbActionNoBet(bigBet);
@@ -172,7 +172,7 @@ public class PokerEngine {
         System.out.println("Dealing river...");
         burn.addCard(dealer.dealCard());
         board.addCard(dealer.dealCard());
-        System.out.println(board.getHandCard(4));
+        System.out.println("     [" + board.getHandCard(4)+ "]");
         gc.pause();
         updateDisplay();
         bbActionNoBet(bigBet);
