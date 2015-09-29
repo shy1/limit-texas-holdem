@@ -118,15 +118,15 @@ public class PokerEngine {
     }
 
     public void updateDisplay() {
-        System.out.println("\nPot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
-        " - " + user.getName() + ": $" + user.getMoney());
 
         if (user.getHand().size() > 0){
-            System.out.println("You have: " + user.getHand());
+            System.out.println("\nYou have: " + user.getHand());
         }
         if (board.getHand().size() > 0) {
             System.out.println("Board: " + board.getHand());
         }
+        System.out.println("Pot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
+                " - " + user.getName() + ": $" + user.getMoney());
     }
 
     public void displayPot(){
