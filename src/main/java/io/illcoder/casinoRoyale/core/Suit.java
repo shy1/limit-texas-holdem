@@ -11,11 +11,11 @@ public enum Suit {
 
     private String altSuit;
 
-    public Suit (String altSuit) {
+    Suit (String altSuit) {
         this.altSuit = altSuit;
     }
 
-    public getAltSuit(){
+    public String getAltSuit(){
         return this.altSuit;
     }
 }
