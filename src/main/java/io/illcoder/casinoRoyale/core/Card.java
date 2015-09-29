@@ -75,6 +75,5 @@ public class Card {
         return altRank + "" + altSuit;
     }
 
-
-
 }
+

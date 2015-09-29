@@ -14,19 +14,19 @@ public enum Rank {
 
     /**
      * Rank object Constructor that establishes the value type of poker and black jack
-      * @param pokerValue
+     * @param pokerValue
      * @param blackjackValue
      */
-     Rank(int pokerValue, int blackjackValue, String altRank){
+
+    Rank(int pokerValue, int blackjackValue, String altRank){
         this.pokerValue = pokerValue;
         this.blackjackValue = blackjackValue;
         this.altRank = altRank;
-
     }
 
     /**
      * This function gets the numeric value for poker for a particular rank
-      * @return int pokerValue is the numeric value to be used in the poker game
+     * @return int pokerValue is the numeric value to be used in the poker game
      */
     public int getPokerValue(){
         return this.pokerValue;
