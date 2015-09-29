@@ -18,6 +18,7 @@ public class Hand {
     private int[] value;
     private static List<Card> hand1 = new ArrayList<Card>();
     private static List<Card> hand2 = new ArrayList<Card>();
+    List<Card> theHand;
 
 //    public Hand(List<Card> _hand) {
 //        theHand = _hand;
@@ -56,7 +57,7 @@ public class Hand {
 //        for (int k = 0; k < 5; k++){
 //            theHand.add(dealer.dealCard());
 //        }
-        List<Card> theHand = _hand;
+        theHand = _hand;
 
         // array to hold counts of each card rank
         int[] cardRanks = new int[15];
@@ -75,11 +76,11 @@ public class Hand {
                     flush = false;
                 }
             }
-            System.out.println(theHand.get(j).getCardPokerValue() + ":" + theHand.get(j).getSuit());
+//            System.out.println(theHand.get(j).getCardPokerValue() + ":" + theHand.get(j).getSuit());
 
         }
-        System.out.println(Arrays.toString(cardRanks));
-        System.out.println(flush);
+//        System.out.println(Arrays.toString(cardRanks));
+//        System.out.println(flush);
 
         for (int n = 2; n < 11; n++){
             if (cardRanks[n] == 1 && cardRanks[n+1] == 1 && cardRanks[n+2] == 1 && cardRanks[n+3] == 1 && cardRanks[n+4] == 1){
@@ -94,7 +95,7 @@ public class Hand {
             straight = true;
             topStraightRank = 5;
         }
-        System.out.println(straight + ":" + topStraightRank);
+//        System.out.println(straight + ":" + topStraightRank);
         // goes through cardRanks array and records any pairs, trips, or quads
         for (int m = 14; m > 1; m--){
             if (cardRanks[m] > sameRanks){
@@ -114,8 +115,8 @@ public class Hand {
                 idx++;
             }
         }
-        System.out.println(sameRanks + ":" + largeRankValue + "\n" + sameRanks2 + ":" + smallRankValue);
-        System.out.println(Arrays.toString(highCardRanks));
+//        System.out.println(sameRanks + ":" + largeRankValue + "\n" + sameRanks2 + ":" + smallRankValue);
+//        System.out.println(Arrays.toString(highCardRanks));
 
         /**
          * assign hand rankings
@@ -191,8 +192,8 @@ public class Hand {
         }
     }
 
-    public List<Card> getTheHand(){
-        return hand1;
+    public int getHandValue(){
+        return value[0];
     }
 
     public int compare(Hand compHand) {
@@ -205,33 +206,73 @@ public class Hand {
         return 0;
     }
 
-    public static void main(String[] args) {
-
-
-        Card card1 = new Card(Suit.CLUBS, Rank.ACE);
-        Card card2 = new Card(Suit.CLUBS, Rank.TEN);
-        Card card3 = new Card(Suit.CLUBS, Rank.KING);
-        Card card4 = new Card(Suit.CLUBS, Rank.QUEEN);
-        Card card5 = new Card(Suit.CLUBS, Rank.JACK);
-        hand1.add(card1);
-        hand1.add(card2);
-        hand1.add(card3);
-        hand1.add(card4);
-        hand1.add(card5);
-
-        Card card11 = new Card(Suit.CLUBS, Rank.ACE);
-        Card card22 = new Card(Suit.CLUBS, Rank.TEN);
-        Card card33 = new Card(Suit.CLUBS, Rank.JACK);
-        Card card44 = new Card(Suit.CLUBS, Rank.KING);
-        Card card55 = new Card(Suit.CLUBS, Rank.QUEEN);
-        hand2.add(card11);
-        hand2.add(card22);
-        hand2.add(card33);
-        hand2.add(card44);
-        hand2.add(card55);
-
-        Hand handOne = new Hand(hand1);
-        Hand handTwo = new Hand(hand2);
-        System.out.println(handOne.compare(handTwo));
+    public String toString(){
+        return theHand + ":" + value[0] + ":" + value[1];
     }
+
+    public String getRankName(){
+        String rankName;
+        switch (value[0]){
+            case 1:
+                rankName = "High Card";
+                break;
+            case 2:
+                rankName = "One Pair";
+                break;
+            case 3:
+                rankName = "Two Pair";
+                break;
+            case 4:
+                rankName = "Three of a Kind";
+                break;
+            case 5:
+                rankName = "Straight";
+                break;
+            case 6:
+                rankName = "Flush";
+                break;
+            case 7:
+                rankName = "Full House";
+                break;
+            case 8:
+                rankName = "Four of a Kind";
+                break;
+            case 9:
+                rankName = "Straight Flush";
+                break;
+            default:
+                rankName = "Error: Unknown Hand Ranking";
+                break;
+        }
+        return rankName;
+    }
+//    public static void main(String[] args) {
+//
+//
+//        Card card1 = new Card(Suit.CLUBS, Rank.ACE);
+//        Card card2 = new Card(Suit.CLUBS, Rank.TEN);
+//        Card card3 = new Card(Suit.CLUBS, Rank.KING);
+//        Card card4 = new Card(Suit.CLUBS, Rank.QUEEN);
+//        Card card5 = new Card(Suit.CLUBS, Rank.JACK);
+//        hand1.add(card1);
+//        hand1.add(card2);
+//        hand1.add(card3);
+//        hand1.add(card4);
+//        hand1.add(card5);
+//
+//        Card card11 = new Card(Suit.CLUBS, Rank.ACE);
+//        Card card22 = new Card(Suit.CLUBS, Rank.TEN);
+//        Card card33 = new Card(Suit.CLUBS, Rank.JACK);
+//        Card card44 = new Card(Suit.CLUBS, Rank.KING);
+//        Card card55 = new Card(Suit.CLUBS, Rank.QUEEN);
+//        hand2.add(card11);
+//        hand2.add(card22);
+//        hand2.add(card33);
+//        hand2.add(card44);
+//        hand2.add(card55);
+//
+//        Hand handOne = new Hand(hand1);
+//        Hand handTwo = new Hand(hand2);
+//        System.out.println(handOne.compare(handTwo));
+//    }
 }

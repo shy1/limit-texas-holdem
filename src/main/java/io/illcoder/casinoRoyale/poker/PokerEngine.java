@@ -2,9 +2,8 @@ package io.illcoder.casinoRoyale.poker;
 
 
 import io.illcoder.casinoRoyale.core.*;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+
+import java.util.*;
 
 /**
  * Created by seth on 9/27/2015.
@@ -28,12 +27,14 @@ public class PokerEngine {
     boolean playerFolded = false;
     boolean continueLoop = true;
     GameControl gc = new GameControl();
+    List<Card> sevenCards;
 
     public PokerEngine (Player _user) {
         this.user = _user;
         this.cpu = new Player("CPU");
         this.board = new Player("BOARD");
         this.burn = new Player("BURN");
+
 
         sb = cpu;
         bb = user;
@@ -149,7 +150,6 @@ public class PokerEngine {
         board.addCard(dealer.dealCard());
         board.addCard(dealer.dealCard());
         board.addCard(dealer.dealCard());
-        System.out.println(dealer.getCardIndex());
         gc.pause();
         updateDisplay();
         bbActionNoBet(bigBlind);
@@ -499,11 +499,38 @@ public class PokerEngine {
     public void determineWinner(){
         if (sb.getHand().size() < 1) {
             bb.setMoney(bb.getMoney() + pot);
-            System.out.println(bb.getName() + " wins the pot.");
+            System.out.println(bb.getName() + " wins the $" + pot + " pot.");
+            return;
         } else if (bb.getHand().size() < 1) {
             sb.setMoney(sb.getMoney() + pot);
-            System.out.println(sb.getName() + " wins the pot.");
+            System.out.println(sb.getName() + " wins the $" + pot + " pot.");
+            return;
         }
+
+        Hand sbHand = getTopCombo(sb);
+        Hand bbHand = getTopCombo(bb);
+        System.out.println("\n" + board.getName() + ": " + board.getHand());
+        System.out.println(sb.getName() + " has: " + sb.getHand() + " - " + sbHand.getRankName());
+        System.out.println(bb.getName() + " has: " + bb.getHand()+ " - " + bbHand.getRankName());
+        int winner = sbHand.compare(bbHand);
+        switch (winner){
+            case -1:
+                bb.setMoney(bb.getMoney() + pot);
+                System.out.println("\n" + bb.getName() + " wins the $" + pot + " pot.");
+                break;
+            case 0:
+                bb.setMoney(bb.getMoney() + (pot/2));
+                sb.setMoney(sb.getMoney() + (pot/2));
+                System.out.println("\nThe $" + pot + "pot is split.");
+                break;
+            case 1:
+                sb.setMoney(sb.getMoney() + pot);
+                System.out.println("\n" + sb.getName() + " wins the $" + pot + " pot.");
+                break;
+        }
+
+        //System.out.println(winner);
+
     }
 
     public void dealHoleCards() {
@@ -526,6 +553,43 @@ public class PokerEngine {
 
     }
 
+    public Hand getTopCombo(Player _player){
+        ArrayList handCombos = new ArrayList<Hand>();
+        List<Card> sevenCards = new ArrayList<Card>(board.getHand());
+
+        sevenCards.add(_player.getHandCard(0));
+        sevenCards.add(_player.getHandCard(1));
+//        System.out.println(sevenCards);
+        int hLength = sevenCards.size();
+
+        for(int i = 0; i < hLength - 4; i++)
+            for(int j = i+1; j < hLength - 3; j++)
+                for(int k = j+1; k < hLength - 2; k++)
+                    for(int m = k+1; m < hLength - 1; m++)
+                        for(int n = m+1; n < hLength; n++){
+                            List<Card> cHand = new ArrayList<Card>();
+                            cHand.add(sevenCards.get(i));
+                            cHand.add(sevenCards.get(j));
+                            cHand.add(sevenCards.get(k));
+                            cHand.add(sevenCards.get(m));
+                            cHand.add(sevenCards.get(n));
+//                            System.out.println(cHand);
+                            Hand oHand = new Hand(cHand);
+                            handCombos.add(oHand);
+//                            System.out.println(oHand.getHandValue());
+//                            System.out.println(handCombos.size());
+                        }
+        Hand topHand = (Hand) handCombos.get(0);
+
+        for (int x = 1; x < handCombos.size(); x++){
+            Hand tempHand = (Hand) handCombos.get(x);
+//            System.out.println(topHand + ":" + tempHand + ":" + tempHand.compare(topHand));
+            if (tempHand.compare(topHand) == 1) {
+                topHand = (Hand) handCombos.get(x);
+            }
+        }
+        return topHand;
+    }
 
     public static void main(String[] args) {
         Player aPlayer = new Player("Seth");
