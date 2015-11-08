@@ -314,7 +314,6 @@ public class PokerEngine {
      * @param betSize
      */
     public void sbActionCompleteBlind(int prevBetSize, int betSize) {
-        //System.out.println(" ");
         if (raiseCount > 3) {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
@@ -421,7 +420,6 @@ public class PokerEngine {
      * @param betSize
      */
     public void bbActionFacingBet(int prevBetSize, int betSize) {
-        //System.out.println(" ");
         if (raiseCount > 3) {
             if (bb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
@@ -489,7 +487,6 @@ public class PokerEngine {
      * @param betSize - the size of a bet in the current round
      */
     public void bbActionAfterComplete(int betSize){
-        //System.out.println(" ");
         if (bb.getName().equalsIgnoreCase("CPU")) {
             Random rand = new Random();
             action = rand.nextInt(2) + 1;
