@@ -20,30 +20,13 @@ public class Hand {
     private static List<Card> hand2 = new ArrayList<Card>();
     List<Card> theHand;
 
-//    public Hand(List<Card> _hand) {
-//        theHand = _hand;
-//        value = new int[6];
-//
-//
-//
-//        int[] cardRanks = new int[15];
-//
-//        for (int i = 0; i < 15; i++) {
-//            cardRanks[i] = 0;
-//        }
-//
-//        for (int j = 0; j < 5; j++){
-//            Card card = theHand.get(j);
-//            cardRanks[card.getCardPokerValue()]++;
-//            System.out.println(card.getCardPokerValue());
-//        }
-//    }
-
+    /**
+     * class constructor
+     * @param _hand - the 7 card hand to be evaluated
+     */
     public Hand(List<Card> _hand) {
-        //Dealer dealer = new Dealer();
+
         value = new int[6];
-        // theHand = new ArrayList<Card>();
-        // List<Card> hand2 = new ArrayList<Card>();
         int sameRanks = 1;
         int sameRanks2 = 1;
         int smallRankValue = 0;
@@ -54,9 +37,7 @@ public class Hand {
         int[] highCardRanks = new int[5];
         int idx = 0;
 
-//        for (int k = 0; k < 5; k++){
-//            theHand.add(dealer.dealCard());
-//        }
+
         theHand = _hand;
 
         // array to hold counts of each card rank
@@ -69,18 +50,15 @@ public class Hand {
         // loop through the 5 cards counting those with the same rank and
         // checking for a flush
         for (int j = 0; j < 5; j++){
-            //Card card = theHand.get(j);
             cardRanks[theHand.get(j).getCardPokerValue()]++;
             if (j < 4){
                 if (theHand.get(j).getSuit() != theHand.get(j + 1).getSuit()){
                     flush = false;
                 }
             }
-//            System.out.println(theHand.get(j).getCardPokerValue() + ":" + theHand.get(j).getSuit());
 
         }
-//        System.out.println(Arrays.toString(cardRanks));
-//        System.out.println(flush);
+
 
         for (int n = 2; n < 11; n++){
             if (cardRanks[n] == 1 && cardRanks[n+1] == 1 && cardRanks[n+2] == 1 && cardRanks[n+3] == 1 && cardRanks[n+4] == 1){
@@ -95,7 +73,6 @@ public class Hand {
             straight = true;
             topStraightRank = 5;
         }
-//        System.out.println(straight + ":" + topStraightRank);
         // goes through cardRanks array and records any pairs, trips, or quads
         for (int m = 14; m > 1; m--){
             if (cardRanks[m] > sameRanks){
@@ -115,8 +92,7 @@ public class Hand {
                 idx++;
             }
         }
-//        System.out.println(sameRanks + ":" + largeRankValue + "\n" + sameRanks2 + ":" + smallRankValue);
-//        System.out.println(Arrays.toString(highCardRanks));
+
 
         /**
          * assign hand rankings
@@ -246,33 +222,5 @@ public class Hand {
         }
         return rankName;
     }
-//    public static void main(String[] args) {
-//
-//
-//        Card card1 = new Card(Suit.CLUBS, Rank.ACE);
-//        Card card2 = new Card(Suit.CLUBS, Rank.TEN);
-//        Card card3 = new Card(Suit.CLUBS, Rank.KING);
-//        Card card4 = new Card(Suit.CLUBS, Rank.QUEEN);
-//        Card card5 = new Card(Suit.CLUBS, Rank.JACK);
-//        hand1.add(card1);
-//        hand1.add(card2);
-//        hand1.add(card3);
-//        hand1.add(card4);
-//        hand1.add(card5);
-//
-//        Card card11 = new Card(Suit.CLUBS, Rank.ACE);
-//        Card card22 = new Card(Suit.CLUBS, Rank.TEN);
-//        Card card33 = new Card(Suit.CLUBS, Rank.JACK);
-//        Card card44 = new Card(Suit.CLUBS, Rank.KING);
-//        Card card55 = new Card(Suit.CLUBS, Rank.QUEEN);
-//        hand2.add(card11);
-//        hand2.add(card22);
-//        hand2.add(card33);
-//        hand2.add(card44);
-//        hand2.add(card55);
-//
-//        Hand handOne = new Hand(hand1);
-//        Hand handTwo = new Hand(hand2);
-//        System.out.println(handOne.compare(handTwo));
-//    }
+
 }

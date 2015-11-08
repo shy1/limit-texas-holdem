@@ -10,37 +10,53 @@ import java.util.*;
  * PokerEngine contains the methods and variables to run a heads up limit texas hold'em poker game.
  */
 public class PokerEngine {
-    Dealer dealer = new Dealer();
-    Scanner scan = new Scanner(System.in);
+    Dealer dealer;
+    Scanner scan;
+    GameControl gc;
     Player user;
     Player cpu;
     Player sb;
     Player bb;
     Player board;
     Player burn;
-    int smallBlind = 1;
-    int bigBlind =2;
-    int bigBet = 4;
-    int pot = 0;
+    int smallBlind;
+    int bigBlind;
+    int bigBet;
+    int pot;
     int action;
-    int raiseCount = 0;
-    boolean playerFolded = false;
-    boolean continueLoop = true;
-    GameControl gc = new GameControl();
+    int raiseCount;
+    boolean playerFolded;
+    boolean continueLoop;
     List<Card> sevenCards;
 
+    /**
+     * class constructor
+     * @param _user - Player object with name and bankroll info
+     */
     public PokerEngine (Player _user) {
+        dealer = new Dealer();
+        scan = new Scanner(System.in);
+        smallBlind = 1;
+        bigBlind =2;
+        bigBet = 4;
+        pot = 0;
+        raiseCount = 0;
+        playerFolded = false;
+        continueLoop = true;
+        gc = new GameControl();
+
         this.user = _user;
         this.cpu = new Player("CPU");
         this.board = new Player("BOARD");
         this.burn = new Player("BURN");
 
-
         sb = cpu;
         bb = user;
-
-
     }
+
+    /**
+     * method to welcome the user when a new game is started and begins the first hand
+     */
     public void startGameMessage() {
         System.out.println("Welcome to the Poker Game " + user.getName() + ". You currently have $" +
                 user.getMoney() + " in chips.\nStarting first hand...\n");
@@ -49,6 +65,9 @@ public class PokerEngine {
         nextHand();
     }
 
+    /**
+     * method to give the player an option to play another hand or quit the game
+     */
     public void playerContinue() {
         System.out.println("\nWould you like to play another hand " + user.getName() + "? You currently have $" +
                 user.getMoney() + " in chips.\n\nEnter 1 to play or 2 to quit.");
@@ -67,6 +86,9 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * method to clear all player/board card data from the previous hand
+     */
     public void clearAllHands() {
         sb.getHand().clear();
         bb.getHand().clear();
@@ -75,10 +97,14 @@ public class PokerEngine {
         playerFolded = false;
     }
 
+    /**
+     * method to start a new hand
+     */
     public void nextHand() {
         clearAllHands();
         dealer.shuffleDeck();
-        //System.out.println(dealer.getCardIndex());
+
+        // alternate player position each new hand (moves dealer button)
         if (sb.getName().equalsIgnoreCase("CPU")) {
             sb = user;
             bb = cpu;
@@ -87,13 +113,16 @@ public class PokerEngine {
             bb = user;
         }
 
+        // collect blinds and deal hole cards
         pot = smallBlind + bigBlind;
         sb.setMoney(sb.getMoney() - smallBlind);
         bb.setMoney(bb.getMoney() - bigBlind);
         dealHoleCards();
 
+        // run preflop round of action
         preflop();
 
+        // proceed to flop round if neither player folded preflop
         if (playerFolded) {
             determineWinner();
             return;
@@ -101,6 +130,7 @@ public class PokerEngine {
             flop();
         }
 
+        // proceed to turn round if neither player folded on the flop
         if (playerFolded) {
             determineWinner();
             return;
@@ -108,6 +138,7 @@ public class PokerEngine {
             turn();
         }
 
+        // proceed to river if neither player folded on the turn
         if (playerFolded) {
             determineWinner();
         } else {
@@ -117,6 +148,10 @@ public class PokerEngine {
 
     }
 
+    /**
+     * method to show the user's cards, board cards, and amount of money for each player and what is
+     * currently in the pot
+     */
     public void updateDisplay() {
 
         if (user.getHand().size() > 0){
@@ -129,6 +164,9 @@ public class PokerEngine {
                 " - " + user.getName() + ": $" + user.getMoney());
     }
 
+    /**
+     * displays the amount of money for each player and what is currently in the pot
+     */
     public void displayPot(){
         System.out.println("Pot: $" + pot + " - " + cpu.getName() + ": $" + cpu.getMoney() +
                 " - " + user.getName() + ": $" + user.getMoney());
@@ -178,6 +216,10 @@ public class PokerEngine {
         bbActionNoBet(bigBet);
     }
 
+    /**
+     * display messages for various player actions
+     * @param _player - the player whose action is being displayed
+     */
     public void checkMessage(Player _player) {
         System.out.println("\n" + _player.getName() + " checks.");
     }
@@ -195,14 +237,13 @@ public class PokerEngine {
     }
 
     /**
-     * make separate preflop first sbActionFacingBet method for completing the
-     * small blind that gives the bb an option to check or raise after the sb
-     * calls. when sb calls any other time the action is over.
+     * handle small blind's action when facing a bet from the big blind player
      * @param prevBetSize
      * @param betSize
      */
     public void sbActionFacingBet(int prevBetSize, int betSize) {
-        //System.out.println(" ");
+
+        // if 4 raises have already been made player cannot raise, only call or fold
         if (raiseCount > 3) {
             if (sb.getName().equalsIgnoreCase("CPU")) {
                 Random rand = new Random();
@@ -266,6 +307,12 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * handle first preflop action from small blind player when he has the option
+     * to fold, complete the big blind, or raise
+     * @param prevBetSize
+     * @param betSize
+     */
     public void sbActionCompleteBlind(int prevBetSize, int betSize) {
         //System.out.println(" ");
         if (raiseCount > 3) {
@@ -332,6 +379,10 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * handle the action when the small blind player is facing a bet
+     * @param betSize
+     */
     public void sbActionNoBet(int betSize){
         if (sb.getName().equalsIgnoreCase("CPU")) {
             Random rand = new Random();
@@ -364,6 +415,11 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * handle the action when the big blind player is facing a bet
+     * @param prevBetSize
+     * @param betSize
+     */
     public void bbActionFacingBet(int prevBetSize, int betSize) {
         //System.out.println(" ");
         if (raiseCount > 3) {
@@ -429,8 +485,8 @@ public class PokerEngine {
     }
 
     /**
-     * may need separate methods for dealing with preflop completed small blinds and other opportunities to check
-     * @param betSize
+     * handle big blind's action after the small blind completes the blind preflop
+     * @param betSize - the size of a bet in the current round
      */
     public void bbActionAfterComplete(int betSize){
         //System.out.println(" ");
@@ -454,7 +510,7 @@ public class PokerEngine {
                 sbActionFacingBet(betSize, betSize);
                 break;
             case 3:
-                sb.getHand().clear();
+                bb.getHand().clear();
                 foldMessage(bb);
                 playerFolded = true;
 
@@ -466,6 +522,10 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * handle the big blind's action when not facing a bet from the small blind player
+     * @param betSize
+     */
     public void bbActionNoBet(int betSize){
         if (bb.getName().equalsIgnoreCase("CPU")) {
             Random rand = new Random();
@@ -487,7 +547,7 @@ public class PokerEngine {
                 sbActionFacingBet(betSize, betSize);
                 break;
             case 3:
-                sb.getHand().clear();
+                bb.getHand().clear();
                 foldMessage(bb);
                 playerFolded = true;
 
@@ -499,7 +559,12 @@ public class PokerEngine {
         }
     }
 
+    /**
+     * method to determine the winner of the hand and distribute the pot to the winning player
+     */
     public void determineWinner(){
+
+        // check if either player has folded and no longer has cards
         if (sb.getHand().size() < 1) {
             bb.setMoney(bb.getMoney() + pot);
             System.out.println(bb.getName() + " wins the $" + pot + " pot.");
@@ -510,11 +575,14 @@ public class PokerEngine {
             return;
         }
 
+        // if both players still have cards compare their hand strength to determine the winner
         Hand sbHand = getTopCombo(sb);
         Hand bbHand = getTopCombo(bb);
+
         System.out.println("\n" + board.getName() + ": " + board.getHand());
         System.out.println(sb.getName() + " has: " + sb.getHand() + " - " + sbHand.getRankName());
         System.out.println(bb.getName() + " has: " + bb.getHand()+ " - " + bbHand.getRankName());
+
         int winner = sbHand.compare(bbHand);
         switch (winner){
             case -1:
@@ -532,10 +600,11 @@ public class PokerEngine {
                 break;
         }
 
-        //System.out.println(winner);
-
     }
 
+    /**
+     * deals 2 hole cards to each player
+     */
     public void dealHoleCards() {
         sb.addCard(dealer.dealCard());
         bb.addCard(dealer.dealCard());
@@ -547,6 +616,9 @@ public class PokerEngine {
 
     }
 
+    /**
+     * runs the starting greeting method and then runs the game loop until the player decides to quit
+     */
     public void runGame() {
         startGameMessage();
 
@@ -556,13 +628,19 @@ public class PokerEngine {
 
     }
 
+    /**
+     * method to check all of the 5 card combinations of a players 7 card hand (2 hole cards +
+     * 5 board cards) during showdown.
+     * @param _player
+     * @return a Hand object with highest ranking 5 card combination that is possible
+     */
     public Hand getTopCombo(Player _player){
         ArrayList handCombos = new ArrayList<Hand>();
         List<Card> sevenCards = new ArrayList<Card>(board.getHand());
 
         sevenCards.add(_player.getHandCard(0));
         sevenCards.add(_player.getHandCard(1));
-//        System.out.println(sevenCards);
+
         int hLength = sevenCards.size();
 
         for(int i = 0; i < hLength - 4; i++)
@@ -576,17 +654,13 @@ public class PokerEngine {
                             cHand.add(sevenCards.get(k));
                             cHand.add(sevenCards.get(m));
                             cHand.add(sevenCards.get(n));
-//                            System.out.println(cHand);
                             Hand oHand = new Hand(cHand);
                             handCombos.add(oHand);
-//                            System.out.println(oHand.getHandValue());
-//                            System.out.println(handCombos.size());
                         }
         Hand topHand = (Hand) handCombos.get(0);
 
         for (int x = 1; x < handCombos.size(); x++){
             Hand tempHand = (Hand) handCombos.get(x);
-//            System.out.println(topHand + ":" + tempHand + ":" + tempHand.compare(topHand));
             if (tempHand.compare(topHand) == 1) {
                 topHand = (Hand) handCombos.get(x);
             }
@@ -594,10 +668,10 @@ public class PokerEngine {
         return topHand;
     }
 
-//    public static void main(String[] args) {
-//        Player aPlayer = new Player("Seth");
-//        PokerEngine game = new PokerEngine(aPlayer);
-//        game.runGame();
-//    }
+    public static void main(String[] args) {
+        Player aPlayer = new Player("Seth");
+        PokerEngine game = new PokerEngine(aPlayer);
+        game.runGame();
+    }
 
 }
