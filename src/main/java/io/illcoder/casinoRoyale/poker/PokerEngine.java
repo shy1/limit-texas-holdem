@@ -3,6 +3,7 @@ package io.illcoder.casinoRoyale.poker;
 
 import io.illcoder.casinoRoyale.core.*;
 
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -10,32 +11,35 @@ import java.util.*;
  * PokerEngine contains the methods and variables to run a heads up limit texas hold'em poker game.
  */
 public class PokerEngine {
-    Dealer dealer;
-    Scanner scan;
-    GameControl gc;
-    Player user;
-    Player cpu;
-    Player sb;
-    Player bb;
-    Player board;
-    Player burn;
-    int smallBlind;
-    int bigBlind;
-    int bigBet;
-    int pot;
-    int action;
-    int raiseCount;
-    boolean playerFolded;
-    boolean continueLoop;
-    List<Card> sevenCards;
+    private Dealer dealer;
+    private Scanner scan;
+    private GameControl gc;
+
+    private Player user;
+    private Player cpu;
+    private Player sb;
+    private Player bb;
+    private Player board;
+    private Player burn;
+
+    private int smallBlind;
+    private int bigBlind;
+    private int bigBet;
+    private int pot;
+    private int action;
+    private int raiseCount;
+
+    private boolean playerFolded;
+    private boolean continueLoop;
+    private List<Card> sevenCards;
 
     /**
      * class constructor
      * @param _user - Player object with name and bankroll info
      */
-    public PokerEngine (Player _user) {
+    public PokerEngine (Player _user, InputStream _istream) {
         dealer = new Dealer();
-        scan = new Scanner(System.in);
+        scan = new Scanner(_istream);
         smallBlind = 1;
         bigBlind =2;
         bigBet = 4;
@@ -54,8 +58,11 @@ public class PokerEngine {
         bb = user;
     }
 
+    public boolean getContinueLoop() {
+        return continueLoop;
+    }
     /**
-     * method to welcome the user when a new game is started and begins the first hand
+     * method to welcome the user when a new game is started and begin the first hand
      */
     public void startGameMessage() {
         System.out.println("Welcome to the Poker Game " + user.getName() + ". You currently have $" +
@@ -81,7 +88,8 @@ public class PokerEngine {
                 continueLoop = false;
                 break;
             default:
-                nextHand();
+                System.out.println("\nInvalid choice, please read more carefully...");
+                playerContinue();
                 break;
         }
     }
@@ -667,7 +675,8 @@ public class PokerEngine {
 
     public static void main(String[] args) {
         Player aPlayer = new Player("Seth");
-        PokerEngine game = new PokerEngine(aPlayer);
+        InputStream istream = System.in;
+        PokerEngine game = new PokerEngine(aPlayer, istream);
         game.runGame();
     }
 
