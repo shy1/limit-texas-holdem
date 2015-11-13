@@ -14,22 +14,24 @@ public class PokerEngine {
     private Dealer dealer;
     private Scanner scan;
     private GameControl gc;
+    private Actions actions;
+    public Player user;
+    public Player cpu;
 
-    private Player user;
-    private Player cpu;
-    private Player sb;
-    private Player bb;
-    private Player board;
-    private Player burn;
 
-    private int smallBlind;
-    private int bigBlind;
-    private int bigBet;
-    private int pot;
-    private int action;
-    private int raiseCount;
 
-    private boolean playerFolded;
+    public Player sb;
+    public Player bb;
+    public Player board;
+    public Player burn;
+
+    public int smallBlind;
+    public int bigBlind;
+    public int bigBet;
+    public int pot;
+    public int raiseCount;
+
+    public boolean playerFolded;
     private boolean continueLoop;
     private List<Card> sevenCards;
 
@@ -185,7 +187,7 @@ public class PokerEngine {
         System.out.println("Dealing hole cards...");
         gc.pause();
         updateDisplay();
-        sbActionCompleteBlind(smallBlind, bigBlind);
+        actions.sbActionCompleteBlind(smallBlind, bigBlind);
 
     }
 
@@ -199,7 +201,7 @@ public class PokerEngine {
         System.out.println(board.getHand());
         gc.pause();
         updateDisplay();
-        bbActionNoBet(bigBlind);
+        actions.bbActionNoBet(bigBlind);
     }
 
     public void turn(){
@@ -210,7 +212,7 @@ public class PokerEngine {
         System.out.println("     [" + board.getHandCard(3) + "]");
         gc.pause();
         updateDisplay();
-        bbActionNoBet(bigBet);
+        actions.bbActionNoBet(bigBet);
     }
 
     public void river(){
@@ -221,7 +223,7 @@ public class PokerEngine {
         System.out.println("     [" + board.getHandCard(4)+ "]");
         gc.pause();
         updateDisplay();
-        bbActionNoBet(bigBet);
+        actions.bbActionNoBet(bigBet);
     }
 
     /**
@@ -244,325 +246,6 @@ public class PokerEngine {
         System.out.println("\n" + _player.getName() + " bets.");
     }
 
-    /**
-     * handle small blind's action when facing a bet from the big blind player
-     * @param prevBetSize
-     * @param betSize
-     */
-    public void sbActionFacingBet(int prevBetSize, int betSize) {
-
-        // if 4 raises have already been made player cannot raise, only call or fold
-        if (raiseCount > 3) {
-            if (sb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(2) + 1;
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + prevBetSize;
-                    sb.setMoney(sb.getMoney() - prevBetSize);
-                    callMessage(sb);
-                    break;
-                case 2:
-                    sb.getHand().clear();
-                    playerFolded = true;
-                    foldMessage(sb);
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    sbActionFacingBet(prevBetSize, betSize);
-                    break;
-                }
-
-        } else {
-            if (sb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(3) + 1;
-
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + prevBetSize;
-                    sb.setMoney(sb.getMoney() - prevBetSize);
-                    callMessage(sb);
-                    break;
-                case 2:
-                    raiseCount++;
-                    pot = pot + prevBetSize + betSize;
-                    sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                    raiseMessage(sb);
-                    displayPot();
-                    bbActionFacingBet(betSize, betSize);
-                    break;
-                case 3:
-                    sb.getHand().clear();
-                    foldMessage(sb);
-                    playerFolded = true;
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    sbActionFacingBet(prevBetSize, betSize);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * handle first preflop action from small blind player when he has the option
-     * to fold, complete the big blind, or raise
-     * @param prevBetSize
-     * @param betSize
-     */
-    public void sbActionCompleteBlind(int prevBetSize, int betSize) {
-        if (raiseCount > 3) {
-            if (sb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(2) + 1;
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + (betSize / 2);
-                    sb.setMoney(sb.getMoney() - prevBetSize);
-                    callMessage(sb);
-                    bbActionAfterComplete(betSize);
-                    break;
-                case 2:
-                    sb.getHand().clear();
-                    foldMessage(sb);
-                    playerFolded = true;
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    sbActionCompleteBlind(prevBetSize, betSize);
-                    break;
-            }
-
-        } else {
-            if (sb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(3) + 1;
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + prevBetSize;
-                    sb.setMoney(sb.getMoney() - prevBetSize);
-                    callMessage(sb);
-                    bbActionAfterComplete(betSize);
-                    break;
-                case 2:
-                    raiseCount++;
-                    pot = pot + prevBetSize + betSize;
-                    sb.setMoney(sb.getMoney() - prevBetSize - betSize);
-                    raiseMessage(sb);
-                    displayPot();
-                    bbActionFacingBet(betSize, betSize);
-                    break;
-                case 3:
-                    sb.getHand().clear();
-                    foldMessage(sb);
-                    playerFolded = true;
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    sbActionCompleteBlind(prevBetSize, betSize);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * handle the action when the small blind player is facing a bet
-     * @param betSize
-     */
-    public void sbActionNoBet(int betSize){
-        if (sb.getName().equalsIgnoreCase("CPU")) {
-            Random rand = new Random();
-            action = rand.nextInt(2) + 1;
-        } else {
-            System.out.println("\nEnter 1 to CHECK, 2 to BET, 3 to FOLD.");
-            action = scan.nextInt();
-        }
-        switch (action) {
-            case 1:
-                checkMessage(sb);
-                break;
-            case 2:
-                pot = pot + betSize;
-                sb.setMoney(sb.getMoney() - betSize);
-                betMessage(sb);
-                displayPot();
-                bbActionFacingBet(betSize, betSize);
-                break;
-            case 3:
-                sb.getHand().clear();
-                foldMessage(sb);
-                playerFolded = true;
-
-                break;
-            default:
-                System.out.println("Invalid input.\n");
-                sbActionNoBet(betSize);
-                break;
-        }
-    }
-
-    /**
-     * handle the action when the big blind player is facing a bet
-     * @param prevBetSize
-     * @param betSize
-     */
-    public void bbActionFacingBet(int prevBetSize, int betSize) {
-        if (raiseCount > 3) {
-            if (bb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(2) + 1;
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + prevBetSize;
-                    bb.setMoney(bb.getMoney() - prevBetSize);
-                    callMessage(bb);
-                    break;
-                case 2:
-                    bb.getHand().clear();
-                    foldMessage(bb);
-                    playerFolded = true;
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    bbActionFacingBet(prevBetSize, betSize);
-                    break;
-            }
-
-        } else {
-            if (bb.getName().equalsIgnoreCase("CPU")) {
-                Random rand = new Random();
-                action = rand.nextInt(3) + 1;
-            } else {
-                System.out.println("\nEnter 1 to CALL, 2 to RAISE, 3 to FOLD.");
-                action = scan.nextInt();
-            }
-            switch (action) {
-                case 1:
-                    pot = pot + prevBetSize;
-                    bb.setMoney(bb.getMoney() - prevBetSize);
-                    callMessage(bb);
-                    break;
-                case 2:
-                    raiseCount++;
-                    pot = pot + prevBetSize + betSize;
-                    bb.setMoney(bb.getMoney() - prevBetSize - betSize);
-                    raiseMessage(bb);
-                    displayPot();
-                    sbActionFacingBet(betSize, betSize);
-                    break;
-                case 3:
-                    bb.getHand().clear();
-                    foldMessage(bb);
-                    playerFolded = true;
-
-                    break;
-                default:
-                    System.out.println("Invalid input.\n");
-                    bbActionFacingBet(prevBetSize, betSize);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * handle big blind's action after the small blind completes the blind preflop
-     * @param betSize - the size of a bet in the current round
-     */
-    public void bbActionAfterComplete(int betSize){
-        if (bb.getName().equalsIgnoreCase("CPU")) {
-            Random rand = new Random();
-            action = rand.nextInt(2) + 1;
-        } else {
-            System.out.println("\nEnter 1 to CHECK, 2 to RAISE, 3 to FOLD.");
-            action = scan.nextInt();
-        }
-        switch (action) {
-            case 1:
-                checkMessage(bb);
-                break;
-            case 2:
-                raiseCount++;
-                pot = pot + betSize;
-                bb.setMoney(bb.getMoney() - betSize);
-                raiseMessage(bb);
-                displayPot();
-                sbActionFacingBet(betSize, betSize);
-                break;
-            case 3:
-                bb.getHand().clear();
-                foldMessage(bb);
-                playerFolded = true;
-
-                break;
-            default:
-                System.out.println("Invalid input.\n");
-                bbActionAfterComplete(betSize);
-                break;
-        }
-    }
-
-    /**
-     * handle the big blind's action when not facing a bet from the small blind player
-     * @param betSize
-     */
-    public void bbActionNoBet(int betSize){
-        if (bb.getName().equalsIgnoreCase("CPU")) {
-            Random rand = new Random();
-            action = rand.nextInt(2) + 1;
-        } else {
-            System.out.println("\nEnter 1 to CHECK, 2 to BET, 3 to FOLD.");
-            action = scan.nextInt();
-        }
-        switch (action) {
-            case 1:
-                checkMessage(bb);
-                sbActionNoBet(betSize);
-                break;
-            case 2:
-                pot = pot + betSize;
-                bb.setMoney(bb.getMoney() - betSize);
-                betMessage(bb);
-                displayPot();
-                sbActionFacingBet(betSize, betSize);
-                break;
-            case 3:
-                bb.getHand().clear();
-                foldMessage(bb);
-                playerFolded = true;
-
-                break;
-            default:
-                System.out.println("Invalid input.\n");
-                bbActionNoBet(betSize);
-                break;
-        }
-    }
 
     /**
      * method to determine the winner of the hand and distribute the pot to the winning player
@@ -673,10 +356,117 @@ public class PokerEngine {
         return topHand;
     }
 
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public Scanner getScan() {
+        return scan;
+    }
+
+    public GameControl getGc() {
+        return gc;
+    }
+
+    public Player getUser() {
+        return user;
+    }
+
+    public Player getCpu() {
+        return cpu;
+    }
+
+    public Player getSb() {
+        return sb;
+    }
+
+    public Player getBb() {
+        return bb;
+    }
+
+    public Player getBoard() {
+        return board;
+    }
+
+    public Player getBurn() {
+        return burn;
+    }
+
+    public int getSmallBlind() {
+        return smallBlind;
+    }
+
+    public int getBigBlind() {
+        return bigBlind;
+    }
+
+    public int getBigBet() {
+        return bigBet;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+
+    public int getRaiseCount() {
+        return raiseCount;
+    }
+
+    public void setSb(Player sb) {
+        this.sb = sb;
+    }
+
+    public void setBb(Player bb) {
+        this.bb = bb;
+    }
+
+    public void setBoard(Player board) {
+        this.board = board;
+    }
+
+    public void setBurn(Player burn) {
+        this.burn = burn;
+    }
+
+    public void setSmallBlind(int smallBlind) {
+        this.smallBlind = smallBlind;
+    }
+
+    public void setBigBlind(int bigBlind) {
+        this.bigBlind = bigBlind;
+    }
+
+    public void setBigBet(int bigBet) {
+        this.bigBet = bigBet;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+
+    public void setRaiseCount(int raiseCount) {
+        this.raiseCount = raiseCount;
+    }
+
+    public void setPlayerFolded(boolean playerFolded) {
+        this.playerFolded = playerFolded;
+    }
+
+    public boolean isPlayerFolded() {
+        return playerFolded;
+    }
+
+    public void setActions(Actions actions) {
+        this.actions = actions;
+    }
+
     public static void main(String[] args) {
         Player aPlayer = new Player("Seth");
         InputStream istream = System.in;
         PokerEngine game = new PokerEngine(aPlayer, istream);
+        Actions actions = new Actions(game);
+        game.setActions(actions);
         game.runGame();
     }
 
